@@ -1,3 +1,7 @@
+// @title		Notifications Microservice API
+// @version         1.0
+// @description     Notifications microservice for FiuFit's backend.
+
 package main
 
 import (

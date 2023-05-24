@@ -1,0 +1,52 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Notifications microservice for FiuFit's backend.",
+        "title": "Notifications Microservice API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "description": "Returns a 200 code and JSON with a message.",
+                "summary": "Check the service's status.",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "description": "Returns a 200 code and JSON with the date the service started running and a description.",
+                "summary": "Get the service's health status.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.HealthResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.HealthResponse": {
+            "type": "object",
+            "properties": {
+                "creation_date": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "last_response": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

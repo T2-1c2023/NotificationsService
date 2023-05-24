@@ -1,4 +1,4 @@
-FROM golang:1.17
+FROM golang:1.20
 
 # Create app directory 
 WORKDIR /app
@@ -11,10 +11,10 @@ RUN go mod download
 COPY . .
 
 # Build the Go app
-RUN go build app/server.go
+RUN go build -o ./main ./...
 
 # Expose the port that the express are running 
 EXPOSE 13002
 
 # Run migrations and start program (with shell to expand environment variables)
-ENTRYPOINT ["./server"]
+ENTRYPOINT ["./main"]

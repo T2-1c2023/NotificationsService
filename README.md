@@ -52,7 +52,7 @@ Si se desea ejecutar localmente la aplicación, ya sea para desarrollar o correr
 
 
 ### Instalación
-Se debe tener instalado golang (versión 1.17, que es la última versión estable)
+Se debe tener instalado golang (versión 1.20, que es la última versión estable)
 ```
 go mod download
 ```

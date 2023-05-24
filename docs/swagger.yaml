@@ -1,0 +1,34 @@
+definitions:
+  main.HealthResponse:
+    properties:
+      creation_date:
+        type: string
+      description:
+        type: string
+      last_response:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Notifications microservice for FiuFit's backend.
+  title: Notifications Microservice API
+  version: "1.0"
+paths:
+  /:
+    get:
+      description: Returns a 200 code and JSON with a message.
+      responses:
+        "200":
+          description: OK
+      summary: Check the service's status.
+  /health:
+    get:
+      description: Returns a 200 code and JSON with the date the service started running
+        and a description.
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.HealthResponse'
+      summary: Get the service's health status.
+swagger: "2.0"
