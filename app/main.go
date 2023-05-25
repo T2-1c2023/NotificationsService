@@ -6,18 +6,17 @@ package main
 
 import (
 	"os"
+
+	routes "github.com/T2-1c2023/NotificationsService/app/routes"
 )
 
 func main() {
-
-	// Create a new Gin router
-	router := SetupRouter()
+	router := routes.SetupRouter()
 
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "3002" // Default port
 	}
 
-	// Run the server
 	router.Run(":" + port)
 }

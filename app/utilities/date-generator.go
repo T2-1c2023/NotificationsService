@@ -4,6 +4,6 @@ import "time"
 
 func GetCurrentDate() string {
 	currentTime := time.Now()
-	formattedTime := currentTime.Format("2023-05-24 20:25:10")
+	formattedTime := currentTime.Format("2006-01-02 15:04:05")
 	return formattedTime
 }

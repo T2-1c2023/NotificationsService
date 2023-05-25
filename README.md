@@ -92,6 +92,13 @@ sh start-local-app.sh
 - Variables: camelCase
 - Constantes: MAYÚSCULAS
 
+# Documentación
+
+La documentación se puede ver al ejecutar el microservicio, y llamar al endpoint de `/api-docs/index.html`.
+ - De manera local: localhost:3002/api-docs/index.html
+ - En docker local: localhost:13002/api-docs/index.html
+
+Para generar nueva documentación, deben agregarse las debidas anotaciones a la función del controller adecuado, y luego correr `sh generate-swagger-files.sh`.
 
 # Convenciones para trabajar/pushear
 
