@@ -11,7 +11,7 @@ RUN go mod download
 COPY . .
 
 # Build the Go app
-RUN go build -o ./main ./...
+RUN go build -o ./main ./app
 
 # Expose the port that the express are running 
 EXPOSE 13002

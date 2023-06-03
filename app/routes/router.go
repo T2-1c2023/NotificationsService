@@ -18,5 +18,7 @@ func SetupRouter() *gin.Engine {
 
 	router.GET("/health", controller.GetHealth)
 
+	router.POST("/new-follower", controller.NotifyNewFollower)
+
 	return router
 }
