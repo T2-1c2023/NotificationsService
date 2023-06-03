@@ -6,7 +6,9 @@ import (
 	expo "github.com/oliveroneill/exponent-server-sdk-golang/sdk"
 )
 
-func SendNotification(pushTokenString string, title string, body string) error {
+type NotificationsSender struct{}
+
+func (sender *NotificationsSender) SendNotification(pushTokenString string, title string, body string) error {
 	var pushToken, err = expo.NewExponentPushToken(pushTokenString)
 	if err != nil {
 		return err

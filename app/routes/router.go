@@ -8,7 +8,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func SetupRouter() *gin.Engine {
+func SetupRouter(notificationController *controller.NotificationController) *gin.Engine {
 	// Create a new Gin router
 	router := gin.Default()
 
@@ -18,7 +18,7 @@ func SetupRouter() *gin.Engine {
 
 	router.GET("/health", controller.GetHealth)
 
-	router.POST("/new-follower", controller.NotifyNewFollower)
+	router.POST("/new-follower", notificationController.NotifyNewFollower)
 
 	return router
 }

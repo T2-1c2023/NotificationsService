@@ -7,11 +7,15 @@ package main
 import (
 	"os"
 
+	"github.com/T2-1c2023/NotificationsService/app/controller"
 	routes "github.com/T2-1c2023/NotificationsService/app/routes"
+	"github.com/T2-1c2023/NotificationsService/app/services"
+	"github.com/T2-1c2023/NotificationsService/app/utilities"
 )
 
 func main() {
-	router := routes.SetupRouter()
+	notificationController := controller.New(&utilities.NotificationsSender{}, &services.UserService{})
+	router := routes.SetupRouter(notificationController)
 
 	port := os.Getenv("PORT")
 	if port == "" {

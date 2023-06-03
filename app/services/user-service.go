@@ -12,11 +12,12 @@ import (
 )
 
 type ErrorResponse struct {
-	Message string `json: "message" binding: "required"`
+	Message string `json:"message" binding:"required"`
 }
 
-func GetUserById(id int, userInfo string) (model.User, error) {
-	fmt.Printf("User ID: %d\n", id)
+type UserService struct{}
+
+func (service *UserService) GetUserById(id int, userInfo string) (model.User, error) {
 	var user model.User
 	url := os.Getenv("USERS_MICROSERVICE_URL") + "/users/" + strconv.Itoa(id)
 	fmt.Print(url)
@@ -34,15 +35,14 @@ func GetUserById(id int, userInfo string) (model.User, error) {
 
 	bodyBytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		return user, fmt.Errorf("internal server error 1: " + err.Error())
+		return user, fmt.Errorf("internal server error: " + err.Error())
 	}
 
 	if response.StatusCode != http.StatusOK {
 		var errorResponse ErrorResponse
-		fmt.Printf("Status received: %d\n", response.StatusCode)
 		err = json.Unmarshal(bodyBytes, &errorResponse)
 		if err != nil {
-			return user, fmt.Errorf("internal server error 2: " + err.Error())
+			return user, fmt.Errorf("internal server error: " + err.Error())
 		}
 		return user, fmt.Errorf("users microserviced returned " +
 			strconv.Itoa(response.StatusCode) +
