@@ -10,3 +10,5 @@ services:
             ./.env
         ports:
            - "13002:3002"
+        volumes:
+           - "./log:/app/log"

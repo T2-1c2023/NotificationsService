@@ -2,6 +2,7 @@ package __test__
 
 import (
 	"encoding/json"
+	"os"
 
 	mock "github.com/T2-1c2023/NotificationsService/__mock__"
 	"github.com/T2-1c2023/NotificationsService/app/controller"
@@ -13,7 +14,8 @@ import (
 func setUpRouter() *gin.Engine {
 	notificationsSender := mock.NewNotificationSenderMock()
 	userService := mock.NewUserServiceMock()
-	logger := utilities.NewLogger("debug")
+	logFile, _ := os.OpenFile("test.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	logger := utilities.NewLogger("debug", logFile)
 	notificationController := controller.NotificationController{
 		Sender:      &notificationsSender,
 		UserService: &userService,

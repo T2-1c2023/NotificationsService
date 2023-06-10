@@ -23,8 +23,9 @@ type NewFollowerInput struct {
 // @Summary      Send new follower notification to the given followed user.
 // @Description  Send new follower notification to the given followed user.
 // @Success      201
-// @Router       / [post]
+// @Router       /new-follower [post]
 func (controller *NotificationController) NotifyNewFollower(c *gin.Context) {
+	controller.Logger.LogInfo("GET /new-follower")
 	var requestBody NewFollowerInput
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
 		controller.Logger.LogWarn("Bad request, returning 400")

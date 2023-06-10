@@ -34,6 +34,8 @@ func SetupRouter(notificationController *controller.NotificationController,
 
 	router.GET("/api-docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	router.GET("/logs", statusController.GetLogs)
+
 	router.Use(statusController.ValidateBlockedStatus)
 
 	router.POST("/new-follower", notificationController.NotifyNewFollower)

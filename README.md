@@ -1,5 +1,5 @@
 # NotificationsService
-Walking Skeleton para el microservicio de notificaciones desarrollado con `Golang` y `Gin`.
+Microservicio de notificaciones desarrollado con `Golang` y `Gin`.
 Incluye `docker`, `docker compose`, tests unitarios con `testify`, linter, pipeline CI-CD con `Github Actions`. 
 
 

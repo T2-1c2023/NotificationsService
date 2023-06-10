@@ -14,7 +14,13 @@ import (
 )
 
 func main() {
-	logger := utilities.NewLogger(os.Getenv("LOG_LEVEL"))
+	logFile, err := os.OpenFile("./log/app.log", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
+	if err != nil {
+		panic(err)
+	}
+	logger := utilities.NewLogger(os.Getenv("LOG_LEVEL"), logFile)
+	defer logger.CloseFile()
+	logger.LogDebug("Microservice starting...")
 	notificationController := controller.NotificationController{
 		Sender:      &utilities.NotificationsSender{},
 		UserService: &services.UserService{},
@@ -29,6 +35,7 @@ func main() {
 		port = "3002" // Default port
 	}
 
-	logger.LogInfo("Aplicación de Golang ejecutándose en puerto " + port)
+	logger.LogInfo("App started on " + utilities.GetCurrentDate())
+	logger.LogInfo("Notifications microservice running at port " + port)
 	router.Run(":" + port)
 }
