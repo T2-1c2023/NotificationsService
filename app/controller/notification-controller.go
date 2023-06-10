@@ -4,28 +4,15 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/T2-1c2023/NotificationsService/app/model"
+	"github.com/T2-1c2023/NotificationsService/app/services"
+	"github.com/T2-1c2023/NotificationsService/app/utilities"
 	"github.com/gin-gonic/gin"
 )
 
-type (
-	sender interface {
-		SendNotification(pushTokenString string, title string, body string) error
-	}
-	userService interface {
-		GetUserById(id int, userInfo string) (model.User, error)
-	}
-	NotificationController struct {
-		sender      sender
-		userService userService
-	}
-)
-
-func New(sender sender, userService userService) *NotificationController {
-	return &NotificationController{
-		sender:      sender,
-		userService: userService,
-	}
+type NotificationController struct {
+	Sender      utilities.INotificationsSender
+	UserService services.IUserService
+	Logger      utilities.ILogger
 }
 
 type NewFollowerInput struct {
@@ -40,14 +27,16 @@ type NewFollowerInput struct {
 func (controller *NotificationController) NotifyNewFollower(c *gin.Context) {
 	var requestBody NewFollowerInput
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
+		controller.Logger.LogWarn("Bad request, returning 400")
 		c.AbortWithStatusJSON(
 			http.StatusBadRequest,
 			gin.H{"message": err.Error()},
 		)
 		return
 	}
-	followedUser, err := controller.userService.GetUserById(requestBody.FollowedId, c.GetHeader("user_info"))
+	followedUser, err := controller.UserService.GetUserById(requestBody.FollowedId, c.GetHeader("user_info"))
 	if err != nil {
+		controller.Logger.LogError(err)
 		c.AbortWithStatusJSON(
 			http.StatusInternalServerError,
 			gin.H{"message": fmt.Sprintf("User service error: %v\n", err)},
@@ -55,17 +44,21 @@ func (controller *NotificationController) NotifyNewFollower(c *gin.Context) {
 		return
 	}
 
-	err = controller.sender.SendNotification(
+	controller.Logger.LogDebug("Usuario seguido: " + followedUser.Fullname)
+
+	err = controller.Sender.SendNotification(
 		followedUser.ExpoPushToken,
 		"Nuevo seguidor!",
 		"El usuario "+followedUser.Fullname+" te empezó a seguir.")
 	if err != nil {
+		controller.Logger.LogError(err)
 		c.AbortWithStatusJSON(
 			http.StatusInternalServerError,
 			gin.H{"message": fmt.Sprintf("Utilities error: %v", err.Error())},
 		)
 		return
 	}
+	controller.Logger.LogInfo("Notification sent")
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "Notification sent",
 	})

@@ -6,6 +6,10 @@ import (
 	expo "github.com/oliveroneill/exponent-server-sdk-golang/sdk"
 )
 
+type INotificationsSender interface {
+	SendNotification(pushTokenString string, title string, body string) error
+}
+
 type NotificationsSender struct{}
 
 func (sender *NotificationsSender) SendNotification(pushTokenString string, title string, body string) error {

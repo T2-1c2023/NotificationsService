@@ -15,6 +15,10 @@ type ErrorResponse struct {
 	Message string `json:"message" binding:"required"`
 }
 
+type IUserService interface {
+	GetUserById(id int, userInfo string) (model.User, error)
+}
+
 type UserService struct{}
 
 func (service *UserService) GetUserById(id int, userInfo string) (model.User, error) {

@@ -14,13 +14,21 @@ import (
 )
 
 func main() {
-	notificationController := controller.New(&utilities.NotificationsSender{}, &services.UserService{})
-	router := routes.SetupRouter(notificationController)
+	logger := utilities.NewLogger(os.Getenv("LOG_LEVEL"))
+	notificationController := controller.NotificationController{
+		Sender:      &utilities.NotificationsSender{},
+		UserService: &services.UserService{},
+	}
+	statusController := controller.StatusController{
+		Logger: &logger,
+	}
+	router := routes.SetupRouter(&notificationController, &statusController)
 
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "3002" // Default port
 	}
 
+	logger.LogInfo("Aplicación de Golang ejecutándose en puerto " + port)
 	router.Run(":" + port)
 }

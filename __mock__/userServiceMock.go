@@ -6,8 +6,8 @@ import (
 
 type UserServiceMock struct{}
 
-func NewUserServiceMock() *UserServiceMock {
-	return &UserServiceMock{}
+func NewUserServiceMock() UserServiceMock {
+	return UserServiceMock{}
 }
 
 func (service *UserServiceMock) GetUserById(id int, userInfo string) (model.User, error) {
