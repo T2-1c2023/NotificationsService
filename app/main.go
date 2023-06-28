@@ -14,6 +14,12 @@ import (
 )
 
 func main() {
+	if _, err := os.Stat("./log"); os.IsNotExist(err) {
+		err := os.Mkdir("./log", 0755)
+		if err != nil {
+			panic(err)
+		}
+	}
 	logFile, err := os.OpenFile("./log/app.log", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
 	if err != nil {
 		panic(err)
