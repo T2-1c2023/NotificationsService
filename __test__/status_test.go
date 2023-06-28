@@ -8,12 +8,15 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/T2-1c2023/NotificationsService/__mock__"
 	"github.com/T2-1c2023/NotificationsService/app/controller"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGetStatus(t *testing.T) {
-	router := setUpRouter()
+	userService := __mock__.NewUserServiceMock()
+	notificationSender := __mock__.NewNotificationSenderMock()
+	router := setUpRouter(&notificationSender, &userService)
 
 	req, _ := http.NewRequest(http.MethodGet, "/", nil)
 	recorder := httptest.NewRecorder()
@@ -23,7 +26,9 @@ func TestGetStatus(t *testing.T) {
 }
 
 func TestGetHealth(t *testing.T) {
-	router := setUpRouter()
+	userService := __mock__.NewUserServiceMock()
+	notificationSender := __mock__.NewNotificationSenderMock()
+	router := setUpRouter(&notificationSender, &userService)
 
 	req, _ := http.NewRequest(http.MethodGet, "/health", nil)
 	recorder := httptest.NewRecorder()
@@ -33,7 +38,9 @@ func TestGetHealth(t *testing.T) {
 }
 
 func TestBlockService(t *testing.T) {
-	router := setUpRouter()
+	userService := __mock__.NewUserServiceMock()
+	notificationSender := __mock__.NewNotificationSenderMock()
+	router := setUpRouter(&notificationSender, &userService)
 
 	changeStatusInput := controller.ChangeStatusInput{
 		Blocked: true,
@@ -50,7 +57,9 @@ func TestBlockService(t *testing.T) {
 }
 
 func TestGetBlockedStatus(t *testing.T) {
-	router := setUpRouter()
+	userService := __mock__.NewUserServiceMock()
+	notificationSender := __mock__.NewNotificationSenderMock()
+	router := setUpRouter(&notificationSender, &userService)
 
 	req, _ := http.NewRequest(http.MethodGet, "/status", nil)
 	recorder := httptest.NewRecorder()

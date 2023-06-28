@@ -26,7 +26,94 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/main.HealthResponse"
+                            "$ref": "#/definitions/controller.HealthResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/logs": {
+            "get": {
+                "description": "Get the service's logs.",
+                "produces": [
+                    "text/plain"
+                ],
+                "summary": "Get the service's logs.",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/new-follower": {
+            "post": {
+                "description": "Send new follower notification to the given followed user.",
+                "summary": "Send new follower notification to the given followed user.",
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            }
+        },
+        "/status": {
+            "get": {
+                "description": "Get the status of the service.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get the service's blocked status.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Decoded payload of the admin token",
+                        "name": "user_info",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ChangeStatusInput"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Changes the status of the service.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Change the service's blocked status.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Decoded payload of the admin token",
+                        "name": "user_info",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Blocked status of the service",
+                        "name": "rule",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.ChangeStatusInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ChangeStatusInput"
                         }
                     }
                 }
@@ -34,7 +121,15 @@
         }
     },
     "definitions": {
-        "main.HealthResponse": {
+        "controller.ChangeStatusInput": {
+            "type": "object",
+            "properties": {
+                "blocked": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "controller.HealthResponse": {
             "type": "object",
             "properties": {
                 "creation_date": {

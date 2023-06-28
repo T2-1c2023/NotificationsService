@@ -1,5 +1,10 @@
 definitions:
-  main.HealthResponse:
+  controller.ChangeStatusInput:
+    properties:
+      blocked:
+        type: boolean
+    type: object
+  controller.HealthResponse:
     properties:
       creation_date:
         type: string
@@ -29,6 +34,63 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/main.HealthResponse'
+            $ref: '#/definitions/controller.HealthResponse'
       summary: Get the service's health status.
+  /logs:
+    get:
+      description: Get the service's logs.
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: OK
+      summary: Get the service's logs.
+  /new-follower:
+    post:
+      description: Send new follower notification to the given followed user.
+      responses:
+        "201":
+          description: Created
+      summary: Send new follower notification to the given followed user.
+  /status:
+    get:
+      description: Get the status of the service.
+      parameters:
+      - description: Decoded payload of the admin token
+        in: header
+        name: user_info
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ChangeStatusInput'
+      summary: Get the service's blocked status.
+    post:
+      consumes:
+      - application/json
+      description: Changes the status of the service.
+      parameters:
+      - description: Decoded payload of the admin token
+        in: header
+        name: user_info
+        required: true
+        type: string
+      - description: Blocked status of the service
+        in: body
+        name: rule
+        required: true
+        schema:
+          $ref: '#/definitions/controller.ChangeStatusInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ChangeStatusInput'
+      summary: Change the service's blocked status.
 swagger: "2.0"

@@ -1,6 +1,8 @@
 package __mock__
 
 import (
+	"fmt"
+
 	model "github.com/T2-1c2023/NotificationsService/app/model"
 )
 
@@ -22,4 +24,15 @@ func (service *UserServiceMock) GetUserById(id int, userInfo string) (model.User
 		PhotoId:       "",
 		ExpoPushToken: "ExpoPushToken1234",
 	}, nil
+}
+
+type ErrorUserServiceMock struct{}
+
+func NewErrorUserServiceMock() ErrorUserServiceMock {
+	return ErrorUserServiceMock{}
+}
+
+func (service *ErrorUserServiceMock) GetUserById(id int, userInfo string) (model.User, error) {
+	var user model.User
+	return user, fmt.Errorf("error en ErrorUserServiceMock")
 }

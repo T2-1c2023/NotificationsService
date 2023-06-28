@@ -86,7 +86,7 @@ sh start-local-app.sh
 - Nombre de clases, funciones, variables y endpoints: inglés
 
 ### Convenciones de nombres
-- Archivos: kebab-case
+- Archivos: snake_case
 - Structs: PascalCase
 - Funciones: camelCase
 - Variables: camelCase

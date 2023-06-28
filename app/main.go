@@ -21,9 +21,13 @@ func main() {
 	logger := utilities.NewLogger(os.Getenv("LOG_LEVEL"), logFile)
 	defer logger.CloseFile()
 	logger.LogDebug("Microservice starting...")
-	notificationController := controller.NotificationController{
-		Sender:      &utilities.NotificationsSender{},
+	notificationSender := utilities.NotificationSender{
+		Logger: &logger,
+	}
+	notificationController := controller.NewFollowerController{
+		Sender:      &notificationSender,
 		UserService: &services.UserService{},
+		Logger:      &logger,
 	}
 	statusController := controller.StatusController{
 		Logger: &logger,

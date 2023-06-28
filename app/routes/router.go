@@ -10,7 +10,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func SetupRouter(notificationController *controller.NotificationController,
+func SetupRouter(notificationController *controller.NewFollowerController,
 	statusController *controller.StatusController) *gin.Engine {
 	// Create a new Gin router
 	router := gin.Default()

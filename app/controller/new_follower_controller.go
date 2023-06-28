@@ -9,8 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type NotificationController struct {
-	Sender      utilities.INotificationsSender
+type NewFollowerController struct {
+	Sender      utilities.INotificationSender
 	UserService services.IUserService
 	Logger      utilities.ILogger
 }
@@ -24,7 +24,7 @@ type NewFollowerInput struct {
 // @Description  Send new follower notification to the given followed user.
 // @Success      201
 // @Router       /new-follower [post]
-func (controller *NotificationController) NotifyNewFollower(c *gin.Context) {
+func (controller *NewFollowerController) NotifyNewFollower(c *gin.Context) {
 	controller.Logger.LogInfo("GET /new-follower")
 	var requestBody NewFollowerInput
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
