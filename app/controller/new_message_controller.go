@@ -10,28 +10,29 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type NewFollowerController struct {
+type NewMessageController struct {
 	Sender      utilities.INotificationSender
 	UserService services.IUserService
 	Logger      utilities.ILogger
 }
 
-type NewFollowerInput struct {
-	FollowedId int `json:"followed_id" binding:"required"`
+type NewMessageInput struct {
+	RecipientId int    `json:"recipient_id" binding:"required"`
+	Message     string `json:"message" binding:"required"`
 }
 
-// NotifyNewFollower     	godoc
-// @Summary      				 	Send new follower notification to the given followed user.
-// @Description  					Send new follower notification to the given followed user.
-// @Param				 					user_info header string true "Follower user decoded payload info"
-// @Param									input body NewFollowerInput true "Followed user ID"
+// NotifyNewMessage    		godoc
+// @Summary      					Send new message notification to the given recipient user.
+// @Description  					Send new message notification to the given recipient user.
+// @Param				 					user_info header string true "Sender user decoded payload info"
+// @Param									input body NewMessageInput true "Recipient user ID and message"
 // @Success      					201
 // @Failure								400
-// @Failure			 					500
-// @Router       					/new-follower [post]
-func (controller *NewFollowerController) NotifyNewFollower(c *gin.Context) {
-	controller.Logger.LogInfo("GET /new-follower")
-	var requestBody NewFollowerInput
+// @Failure								500
+// @Router       					/new-message [post]
+func (controller *NewFollowerController) NotifyNewMessage(c *gin.Context) {
+	controller.Logger.LogInfo("GET /new-message")
+	var requestBody NewMessageInput
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
 		controller.Logger.LogWarn("Bad request, returning 400")
 		c.AbortWithStatusJSON(
@@ -40,7 +41,7 @@ func (controller *NewFollowerController) NotifyNewFollower(c *gin.Context) {
 		)
 		return
 	}
-	followedUser, err := controller.UserService.GetUserById(requestBody.FollowedId, c.GetHeader("user_info"))
+	recipientUser, err := controller.UserService.GetUserById(requestBody.RecipientId, c.GetHeader("user_info"))
 	if err != nil {
 		controller.Logger.LogError(err)
 		c.AbortWithStatusJSON(
@@ -49,19 +50,18 @@ func (controller *NewFollowerController) NotifyNewFollower(c *gin.Context) {
 		)
 		return
 	}
+	controller.Logger.LogDebug("Destinatario: " + recipientUser.Fullname)
 
-	followerUser, err := model.NewUserFromUserInfo(c.GetHeader("user_info"))
+	senderUser, err := model.NewUserFromUserInfo(c.GetHeader("user_info"))
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 
-	controller.Logger.LogDebug("Usuario seguido: " + followedUser.Fullname)
-
 	err = controller.Sender.SendNotification(
-		followedUser.ExpoPushToken,
-		"Nuevo seguidor!",
-		"El usuario "+followerUser.Fullname+" te empezó a seguir.")
+		recipientUser.ExpoPushToken,
+		"Nuevo mensaje de "+senderUser.Fullname,
+		requestBody.Message)
 	if err != nil {
 		controller.Logger.LogError(err)
 		c.AbortWithStatusJSON(

@@ -10,7 +10,10 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func SetupRouter(notificationController *controller.NewFollowerController,
+func SetupRouter(
+	newFollowerController *controller.NewFollowerController,
+	newMessageController *controller.NewMessageController,
+	trainingCompletedController *controller.TrainingCompletedController,
 	statusController *controller.StatusController) *gin.Engine {
 	// Create a new Gin router
 	router := gin.Default()
@@ -38,7 +41,17 @@ func SetupRouter(notificationController *controller.NewFollowerController,
 
 	router.Use(statusController.ValidateBlockedStatus)
 
-	router.POST("/new-follower", notificationController.NotifyNewFollower)
+	router.POST("/new-follower",
+		validation.UserInfoHeaderValidator,
+		newFollowerController.NotifyNewFollower)
+
+	router.POST("/new-message",
+		validation.UserInfoHeaderValidator,
+		newFollowerController.NotifyNewMessage)
+
+	router.POST("/training-completed",
+		validation.UserInfoHeaderValidator,
+		trainingCompletedController.NotifyTrainingCompleted)
 
 	return router
 }

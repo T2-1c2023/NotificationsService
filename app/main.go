@@ -24,7 +24,17 @@ func main() {
 	notificationSender := utilities.NotificationSender{
 		Logger: &logger,
 	}
-	notificationController := controller.NewFollowerController{
+	newFollowerController := controller.NewFollowerController{
+		Sender:      &notificationSender,
+		UserService: &services.UserService{},
+		Logger:      &logger,
+	}
+	newMessageController := controller.NewMessageController{
+		Sender:      &notificationSender,
+		UserService: &services.UserService{},
+		Logger:      &logger,
+	}
+	trainingCompletedController := controller.TrainingCompletedController{
 		Sender:      &notificationSender,
 		UserService: &services.UserService{},
 		Logger:      &logger,
@@ -32,7 +42,12 @@ func main() {
 	statusController := controller.StatusController{
 		Logger: &logger,
 	}
-	router := routes.SetupRouter(&notificationController, &statusController)
+	router := routes.SetupRouter(
+		&newFollowerController,
+		&newMessageController,
+		&trainingCompletedController,
+		&statusController,
+	)
 
 	port := os.Getenv("PORT")
 	if port == "" {

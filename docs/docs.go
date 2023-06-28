@@ -59,9 +59,65 @@ const docTemplate = `{
             "post": {
                 "description": "Send new follower notification to the given followed user.",
                 "summary": "Send new follower notification to the given followed user.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Follower user decoded payload info",
+                        "name": "user_info",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Followed user ID",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.NewFollowerInput"
+                        }
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "Created"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/new-message": {
+            "post": {
+                "description": "Send new message notification to the given recipient user.",
+                "summary": "Send new message notification to the given recipient user.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Sender user decoded payload info",
+                        "name": "user_info",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Recipient user ID and message",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.NewMessageInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
                     }
                 }
             }
@@ -127,6 +183,41 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/training-completed": {
+            "post": {
+                "description": "Send completed training notification to the user.",
+                "summary": "Send completed training notification to the user.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User decoded payload info",
+                        "name": "user_info",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Completed training title",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.TrainingCompletedInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -148,6 +239,43 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "last_response": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.NewFollowerInput": {
+            "type": "object",
+            "required": [
+                "followed_id"
+            ],
+            "properties": {
+                "followed_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controller.NewMessageInput": {
+            "type": "object",
+            "required": [
+                "message",
+                "recipient_id"
+            ],
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "recipient_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controller.TrainingCompletedInput": {
+            "type": "object",
+            "required": [
+                "training_title"
+            ],
+            "properties": {
+                "training_title": {
                     "type": "string"
                 }
             }

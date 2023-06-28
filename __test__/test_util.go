@@ -21,10 +21,25 @@ func setUpRouter(
 		UserService: userService,
 		Logger:      &logger,
 	}
+	newMessageController := controller.NewMessageController{
+		Sender:      notificationsSender,
+		UserService: userService,
+		Logger:      &logger,
+	}
+	trainingCompletedController := controller.TrainingCompletedController{
+		Sender:      notificationsSender,
+		UserService: userService,
+		Logger:      &logger,
+	}
 	statusController := controller.StatusController{
 		Logger: &logger,
 	}
-	router := routes.SetupRouter(&newFollowerController, &statusController)
+	router := routes.SetupRouter(
+		&newFollowerController,
+		&newMessageController,
+		&trainingCompletedController,
+		&statusController,
+	)
 
 	return router
 }
