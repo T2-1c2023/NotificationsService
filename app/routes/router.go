@@ -24,8 +24,6 @@ func SetupRouter(
 
 	router.GET("/", statusController.GetStatus)
 
-	router.GET("/health", statusController.GetHealth)
-
 	router.GET("/status",
 		validation.UserInfoHeaderValidator,
 		validation.AdminValidator,
@@ -40,6 +38,8 @@ func SetupRouter(
 	router.GET("/logs", statusController.GetLogs)
 
 	router.Use(statusController.ValidateBlockedStatus)
+
+	router.GET("/health", statusController.GetHealth)
 
 	router.POST("/notifications/new-follower",
 		validation.UserInfoHeaderValidator,
