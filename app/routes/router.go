@@ -41,15 +41,15 @@ func SetupRouter(
 
 	router.Use(statusController.ValidateBlockedStatus)
 
-	router.POST("/new-follower",
+	router.POST("/notifications/new-follower",
 		validation.UserInfoHeaderValidator,
 		newFollowerController.NotifyNewFollower)
 
-	router.POST("/new-message",
+	router.POST("/notifications/new-message",
 		validation.UserInfoHeaderValidator,
 		newFollowerController.NotifyNewMessage)
 
-	router.POST("/training-completed",
+	router.POST("/notifications/training-completed",
 		validation.UserInfoHeaderValidator,
 		trainingCompletedController.NotifyTrainingCompleted)
 

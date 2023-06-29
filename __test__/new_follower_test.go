@@ -17,7 +17,7 @@ func TestNewFollowerRequestReturns400WithoutUserInfo(t *testing.T) {
 	notificationSender := __mock__.NewNotificationSenderMock()
 	router := setUpRouter(&notificationSender, &userService)
 
-	req, _ := http.NewRequest(http.MethodPost, "/new-follower", nil)
+	req, _ := http.NewRequest(http.MethodPost, "/notifications/new-follower", nil)
 	recorder := httptest.NewRecorder()
 	router.ServeHTTP(recorder, req)
 
@@ -30,7 +30,7 @@ func TestNewFollowerRequestReturns400WithoutFollowedId(t *testing.T) {
 	notificationSender := __mock__.NewNotificationSenderMock()
 	router := setUpRouter(&notificationSender, &userService)
 
-	req, _ := http.NewRequest(http.MethodPost, "/new-follower", nil)
+	req, _ := http.NewRequest(http.MethodPost, "/notifications/new-follower", nil)
 	recorder := httptest.NewRecorder()
 	userInfo := getUserInfo(true)
 	req.Header.Set("user_info", userInfo)
@@ -50,7 +50,7 @@ func TestNewFollowerRequestReturns201WithCorrectFollowedId(t *testing.T) {
 	}
 	payload, _ := json.Marshal(requestBody)
 
-	req, _ := http.NewRequest(http.MethodPost, "/new-follower", bytes.NewBuffer(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/notifications/new-follower", bytes.NewBuffer(payload))
 	recorder := httptest.NewRecorder()
 	userInfo := getUserInfo(true)
 	req.Header.Set("user_info", userInfo)
@@ -70,7 +70,7 @@ func TestNewFollowerRequestReturns500WhenUserServiceIsDown(t *testing.T) {
 	}
 	payload, _ := json.Marshal(requestBody)
 
-	req, _ := http.NewRequest(http.MethodPost, "/new-follower", bytes.NewBuffer(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/notifications/new-follower", bytes.NewBuffer(payload))
 	recorder := httptest.NewRecorder()
 	userInfo := getUserInfo(true)
 	req.Header.Set("user_info", userInfo)
@@ -90,7 +90,7 @@ func TestNewFollowerRequestReturns500WhenNotificationWasntSent(t *testing.T) {
 	}
 	payload, _ := json.Marshal(requestBody)
 
-	req, _ := http.NewRequest(http.MethodPost, "/new-follower", bytes.NewBuffer(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/notifications/new-follower", bytes.NewBuffer(payload))
 	recorder := httptest.NewRecorder()
 	userInfo := getUserInfo(true)
 	req.Header.Set("user_info", userInfo)

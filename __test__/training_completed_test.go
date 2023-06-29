@@ -17,7 +17,7 @@ func TestTrainingCompletedRequestReturns400WithoutUserInfo(t *testing.T) {
 	notificationSender := __mock__.NewNotificationSenderMock()
 	router := setUpRouter(&notificationSender, &userService)
 
-	req, _ := http.NewRequest(http.MethodPost, "/training-completed", nil)
+	req, _ := http.NewRequest(http.MethodPost, "/notifications/training-completed", nil)
 	recorder := httptest.NewRecorder()
 	router.ServeHTTP(recorder, req)
 
@@ -30,7 +30,7 @@ func TestTrainingCompletedRequestReturns400WithoutBody(t *testing.T) {
 	notificationSender := __mock__.NewNotificationSenderMock()
 	router := setUpRouter(&notificationSender, &userService)
 
-	req, _ := http.NewRequest(http.MethodPost, "/training-completed", nil)
+	req, _ := http.NewRequest(http.MethodPost, "/notifications/training-completed", nil)
 	recorder := httptest.NewRecorder()
 	userInfo := getUserInfo(true)
 	req.Header.Set("user_info", userInfo)
@@ -50,7 +50,7 @@ func TestTrainingCompletedRequestReturns201WithCorrectBody(t *testing.T) {
 	}
 	payload, _ := json.Marshal(requestBody)
 
-	req, _ := http.NewRequest(http.MethodPost, "/training-completed", bytes.NewBuffer(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/notifications/training-completed", bytes.NewBuffer(payload))
 	recorder := httptest.NewRecorder()
 	userInfo := getUserInfo(true)
 	req.Header.Set("user_info", userInfo)
@@ -70,7 +70,7 @@ func TestTrainingCompletedRequestReturns500WhenNotificationWasntSent(t *testing.
 	}
 	payload, _ := json.Marshal(requestBody)
 
-	req, _ := http.NewRequest(http.MethodPost, "/training-completed", bytes.NewBuffer(payload))
+	req, _ := http.NewRequest(http.MethodPost, "/notifications/training-completed", bytes.NewBuffer(payload))
 	recorder := httptest.NewRecorder()
 	userInfo := getUserInfo(true)
 	req.Header.Set("user_info", userInfo)
